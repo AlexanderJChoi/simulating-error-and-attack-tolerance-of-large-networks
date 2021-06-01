@@ -8,7 +8,7 @@ labels = {}
 for NI in randgraph.Nodes():
     labels[NI.GetId()] = str(NI.GetId())
 print("Rand Graph labels created")
-randgraph.DrawGViz(snap.gvlSfdp, "randsmall.png", "Random graph on 100 nodes and 1000 edges", labels)
+randgraph.DrawGViz(snap.gvlCirco, "randsmall.png", "Random graph on 100 nodes and 1000 edges", labels)
 print("Rand Graph Drawing complete")
 
 
@@ -18,6 +18,6 @@ labels = {}
 for NI in prefgraph.Nodes():
     labels[NI.GetId()] = str(NI.GetId())
 print("pref graph labels created")
-prefgraph.DrawGViz(snap.gvlSfdp, "prefsmall.png", "Preferentially attached graph on 100 nodes", labels)
+prefgraph.DrawGViz(snap.gvlCirco, "prefsmall.png", "Preferentially attached graph on 100 nodes", labels)
 print("pref graph Drawing complete")
 
