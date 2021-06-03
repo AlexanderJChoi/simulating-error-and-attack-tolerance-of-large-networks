@@ -30,6 +30,7 @@ analysistype = int(input("""What type of metrics would you like to consider?
         4) locality metrics
         """))
 if analysistype < 1 or analysistype > 4: sys.exit("Analysis type not recognized.")
+if analysistype == 3: sys.exit("Global efficiency metric not supported at this time.")
 
 outfilename = (filename.split(".", 1)[0]) 
 if simtype == 1:
@@ -41,7 +42,7 @@ if analysistype == 1:
 elif analysistype == 2:
     outfilename+="-cluster_size"
 elif analysistype == 3:
-    outfilename+="-global_efficiency"
+    outfilename+="-global_eff"
 elif analysistype == 4:
     outfilename+="-locality"
 outfilename+=str(int(fracremoved * 100))+".txt"
@@ -67,6 +68,9 @@ while(nodes_curr > nodes_thresh):
             metric = str(g_metrics.diameter(graph, int(nodes_curr * 0.5)+1))
         elif analysistype == 2:
             metric = str(g_metrics.largest_cluster_size(graph)) + "\t" + str(g_metrics.average_small_cluster_size(graph))
+        elif analysistype == 3:
+            print("Global Efficiency metric not supported at this time.")
+            #metric = str(g_metrics.global_eff(graph))
         else:
             sys.exit("Analysis Type not recognized")
         print("Completed calculating metric: "+str(interval_i))
@@ -80,7 +84,9 @@ while(nodes_curr > nodes_thresh):
     if simtype == 1:
         graph.DelNode(graph.GetRndNId(Rnd))
     elif simtype == 2:
-        graph.DelNode(graph.GetMxDegNId())
+        NId = graph.GetMxDegNId()
+        graph.DelNode(NId)
+        #print("Node deleted: " + str(NId))
     else:
         sys.exit("Simulation Type not recognized")
 
