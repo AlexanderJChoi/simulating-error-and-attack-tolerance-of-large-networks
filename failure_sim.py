@@ -62,13 +62,15 @@ while(nodes_curr > nodes_thresh):
     # calculate the metric for the current graph
     if(interval_i < len(intervals) and nodes_curr <= intervals[interval_i]):    
         print("Calculating metric: " + str(interval_i))
-        metric = 0
+        metric = ""
         if(analysistype == 1):
-            metric = g_metrics.diameter(graph, int(nodes_curr * 0.5)+1)
+            metric = str(g_metrics.diameter(graph, int(nodes_curr * 0.5)+1))
+        elif analysistype == 2:
+            metric = str(g_metrics.largest_cluster_size(graph)) + "\t" + str(g_metrics.average_small_cluster_size(graph))
         else:
             sys.exit("Analysis Type not recognized")
         print("Completed calculating metric: "+str(interval_i))
-        outfile.write(str((nodes_orig - nodes_curr) / nodes_orig) + "\t" + str(metric)+"\n")
+        outfile.write(str((nodes_orig - nodes_curr) / nodes_orig) + "\t" + metric+"\n")
         interval_i+=1
         
     if nodes_curr == 0: break
