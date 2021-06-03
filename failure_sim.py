@@ -17,6 +17,7 @@ simtype = int(input("""Would you like to simulate
 1) random failure, or 
 2) targeted attack? 
 """))
+if simtype != 1 and simtype != 2: sys.exit("Simulation type not recognized.")
 
 fracremoved = float(input("What fraction of the nodes would you like to remove before ending the simulation? "))
 nodes_thresh = int((1-fracremoved)*nodes_orig)
@@ -28,8 +29,23 @@ analysistype = int(input("""What type of metrics would you like to consider?
         3) global efficiency
         4) locality metrics
         """))
+if analysistype < 1 or analysistype > 4: sys.exit("Analysis type not recognized.")
 
-outfilename = input("What file would you like to save this data in?")
+outfilename = (filename.split(".", 1)[0]) 
+if simtype == 1:
+    outfilename+="-random_error"
+elif simtype == 2:
+    outfilename+="-targeted_attack"
+if analysistype == 1:
+    outfilename+="-diameter"
+elif analysistype == 2:
+    outfilename+="-cluster_size"
+elif analysistype == 3:
+    outfilename+="-global_efficiency"
+elif analysistype == 4:
+    outfilename+="-locality"
+outfilename+=str(int(fracremoved * 100))+".txt"
+
 outfile = open(outfilename, 'w')
 print("Outfile opened")
 
@@ -62,7 +78,7 @@ while(nodes_curr > nodes_thresh):
     if simtype == 1:
         graph.DelNode(graph.GetRndNId(Rnd))
     elif simtype == 2:
-        print("Targeted attack not implemented yet")
+        graph.DelNode(graph.GetMxDegNId())
     else:
         sys.exit("Simulation Type not recognized")
 
