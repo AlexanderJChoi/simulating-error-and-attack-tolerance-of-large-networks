@@ -34,8 +34,8 @@ if analysistype < 1 or analysistype > 4: sys.exit("Analysis type not recognized.
 if analysistype == 3: sys.exit("Global efficiency metric not supported at this time.")
 if analysistype == 4: 
     g_metrics.init_locality(graph, NUM_TEMPORAL)
-    sys.exit("TESTING INIT LOCALITY... EXITING")
 
+   
 outfilename = (filename.split(".", 1)[0]) 
 if simtype == 1:
     outfilename+="-random_error"
@@ -75,6 +75,9 @@ while(nodes_curr > nodes_thresh):
         elif analysistype == 3:
             print("Global Efficiency metric not supported at this time.")
             #metric = str(g_metrics.global_eff(graph))
+        elif analysistype == 4:
+            temp_local, spat_local = g_metrics.locality(graph)
+            metric = str(temp_local) + "\t" + str(spat_local)
         else:
             sys.exit("Analysis Type not recognized")
         print("Completed calculating metric: "+str(interval_i))
@@ -94,5 +97,7 @@ while(nodes_curr > nodes_thresh):
     else:
         sys.exit("Simulation Type not recognized")
 
-print("Simulation complete")
+print("Simulation complete, cleaning up")
+if analysistype == 4: g_metrics_reset_locality()
 outfile.close()
+print("Done.")

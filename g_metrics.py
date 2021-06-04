@@ -63,7 +63,7 @@ def init_locality(un_graph, K):
         for j in range(K):
             # Get a random node, other than node_i that has not been added already
             n_id = un_graph.GetRndNId(Rnd)
-            while n_id == i_id or n_id in nodes: # 
+            while n_id == i_id or nodes.IsIn(n_id): # 
                 n_id = un_graph.GetRndNId(Rnd)
             # add thos node to the set
             nodes.append(n_id)
@@ -99,30 +99,7 @@ def init_locality(un_graph, K):
 
 
     print ("Done init")
-"""  Testing to verify maps are populated correctly
-    check_node = un_graph.GetRndNId(Rnd)
-    print("Checking node: "+str(check_node))
-    pass_check = True
-    check_vec = snap.TIntV()
 
-    for x in temp_local_nodes[check_node]:
-        print("TLocal node: "+str(x))
-        node_x = un_graph.GetNI(x)
-        for k in range(node_x.GetDeg()):
-            nbr_id = node_x.GetNbrNId(k)
-            check_vec.append(nbr_id)
-            print("Neighbor is: " + str(nbr_id))
-    num = 0
-    for y in spat_local_nodes[check_node]:
-        if y not in check_vec: pass_check = False
-        num+=1
-        print(str(y))
-
-    if pass_check and num == check_vec.Len(): 
-        print("Passed Test")
-    else:
-        print("FAIL :((((")
-"""
 # Returns a pair, for the node (temporal locality metric, spatial locality metric)
 def calculate_local_node(node_id, un_graph):
     length, shortestpath = un_graph.GetShortPathAll(node_id)
@@ -132,7 +109,7 @@ def calculate_local_node(node_id, un_graph):
 
     for x_id in temp_local_nodes[node_id]:
         num_temp+=1
-        if un_graph.IsNode(x_id):
+        if un_graph.IsNode(x_id) and shortestpath.IsKey(x_id):
             sum_temp_eff+= (1 / shortestpath[x_id])
 
     num_spat = 0
@@ -140,7 +117,7 @@ def calculate_local_node(node_id, un_graph):
 
     for y_id in spat_local_nodes[node_id]:
         num_spat+=1
-        if un_graph.IsNode(y_id):
+        if un_graph.IsNode(y_id) and shortestpath.IsKey(y_id):
             sum_spat_eff+= (1 / shortestpath[y_id])
 
     if num_temp != 0:
@@ -153,5 +130,28 @@ def calculate_local_node(node_id, un_graph):
         return temp, spat
 
 def locality(un_graph):
-    return 0
+    num_nodes = un_graph.GetNodes()
+    if num_nodes == 0: return 0, 0
+    sum_temp_eff = 0
+    sum_spat_eff = 0
+    for node_i in un_graph.Nodes():
+        id_i = node_i.GetId()
+        temp_eff_i, spat_eff_i = calculate_local_node(id_i, un_graph)
+        sum_temp_eff += (temp_eff_i / temp_local_eff_norm[id_i])
+        sum_spat_eff += (spat_eff_i / spat_local_eff_norm[id_i])
+        
+    return (sum_temp_eff / num_nodes), (sum_spat_eff / num_nodes)
+
+def reset_locality():
+    global temp_local_nodes
+    global spat_local_nodes
+
+    global temp_local_eff_norm
+    global spat_local_eff_norm
+
+    temp_local_nodes.Clr()
+    spat_local_nodes.Clr()
+
+    temp_local_eff_norm.Clr()
+    spat_local_eff_norm.Clr()
 
