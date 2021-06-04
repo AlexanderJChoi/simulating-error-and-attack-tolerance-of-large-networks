@@ -4,7 +4,6 @@ import sys
 from random import choice
 from math import floor
 
-NUM_DATAPOINTS = 50
 NUM_TEMPORAL = 10
 
 
@@ -35,6 +34,7 @@ if analysistype == 3: sys.exit("Global efficiency metric not supported at this t
 if analysistype == 4: 
     g_metrics.init_locality(graph, NUM_TEMPORAL)
 
+NUM_DATAPOINTS = int(input(" How many datapoitns would you like to use? "))
    
 outfilename = (filename.split(".", 1)[0]) 
 if simtype == 1:
@@ -49,7 +49,7 @@ elif analysistype == 3:
     outfilename+="-global_eff"
 elif analysistype == 4:
     outfilename+="-locality"
-outfilename+=str(int(fracremoved * 100))+".txt"
+outfilename+="-"+str(int(fracremoved * 100))+"-"+str(NUM_DATAPOINTS)+".txt"
 
 outfile = open(outfilename, 'w')
 print("Outfile opened")
