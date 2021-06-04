@@ -5,6 +5,7 @@ from random import choice
 from math import floor
 
 NUM_DATAPOINTS = 50
+NUM_TEMPORAL = 10
 
 
 filename = input("What .graph file would you like to analyze? ")
@@ -31,6 +32,9 @@ analysistype = int(input("""What type of metrics would you like to consider?
         """))
 if analysistype < 1 or analysistype > 4: sys.exit("Analysis type not recognized.")
 if analysistype == 3: sys.exit("Global efficiency metric not supported at this time.")
+if analysistype == 4: 
+    g_metrics.init_locality(graph, NUM_TEMPORAL)
+    sys.exit("TESTING INIT LOCALITY... EXITING")
 
 outfilename = (filename.split(".", 1)[0]) 
 if simtype == 1:
