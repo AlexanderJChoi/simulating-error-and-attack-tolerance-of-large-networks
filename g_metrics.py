@@ -26,11 +26,11 @@ def global_eff(un_graph):
 
     for nodei in un_graph.Nodes():
         i = nodei.GetId()
-        #print("i: "+ str(i))
+        print("i: "+ str(i))
         shortestpath, NIdToDistH = un_graph.GetShortPathAll(i)
         for nodej in un_graph.Nodes():
             j = nodej.GetId()
-            if i < j and j in NIdToDistH:
+            if i < j and NIdToDistH.IsKey(j):
                 running_total+= float(1/(NIdToDistH[j]))
     node_num = un_graph.GetNodes()
     return running_total / (node_num * (node_num - 1))
@@ -135,6 +135,7 @@ def locality(un_graph):
     sum_temp_eff = 0
     sum_spat_eff = 0
     for node_i in un_graph.Nodes():
+        if node_i.GetDeg() == 0: continue
         id_i = node_i.GetId()
         temp_eff_i, spat_eff_i = calculate_local_node(id_i, un_graph)
         sum_temp_eff += (temp_eff_i / temp_local_eff_norm[id_i])
