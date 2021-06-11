@@ -32,7 +32,7 @@ def execute():
             4) locality metrics
             """))
     if analysistype < 1 or analysistype > 4: sys.exit("Analysis type not recognized.")
-    if analysistype == 3: sys.exit("Global efficiency metric not supported at this time.")
+    #if analysistype == 3:  sys.exit("Global efficiency metric not supported at this time.")
     if analysistype == 4: 
         g_metrics.init_locality(graph, NUM_TEMPORAL)
 
@@ -75,8 +75,8 @@ def execute():
             elif analysistype == 2:
                 metric = str(g_metrics.largest_cluster_size(graph)) + "\t" + str(g_metrics.average_small_cluster_size(graph))
             elif analysistype == 3:
-                print("Global Efficiency metric not supported at this time.")
-                #metric = str(g_metrics.global_eff(graph))
+                #print("Global Efficiency metric not supported at this time.")
+                metric = str(g_metrics.global_eff(graph))
             elif analysistype == 4:
                 temp_local, spat_local = g_metrics.locality(graph)
                 metric = str(temp_local) + "\t" + str(spat_local)

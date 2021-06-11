@@ -26,7 +26,7 @@ def global_eff(un_graph):
 
     for nodei in un_graph.Nodes():
         i = nodei.GetId()
-        print("i: "+ str(i))
+        #print("i: "+ str(i))
         shortestpath, NIdToDistH = un_graph.GetShortPathAll(i)
         for nodej in un_graph.Nodes():
             j = nodej.GetId()

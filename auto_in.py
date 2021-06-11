@@ -33,5 +33,13 @@ for fn in filenames:
             print("4")
             print("200")
  
+        if "g" in sys.argv:
+            #start a global efficiency metric testt
+            print(prefix + fn)
+            print(str(st))
+            print("1.0")
+            print("3")
+            print("40")
+
 
 
